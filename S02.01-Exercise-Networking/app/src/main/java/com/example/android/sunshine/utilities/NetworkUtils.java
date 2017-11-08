@@ -15,9 +15,13 @@
  */
 package com.example.android.sunshine.utilities;
 
+import android.net.Uri;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.Scanner;
 
@@ -36,12 +40,16 @@ public final class NetworkUtils {
 
     private static final String FORECAST_BASE_URL = STATIC_WEATHER_URL;
 
+    private static final String OPEN_WEATHER_MAP_URL =
+            "http://api.openweathermap.org/data/2.5/weather";
+
     /*
      * NOTE: These values only effect responses from OpenWeatherMap, NOT from the fake weather
      * server. They are simply here to allow us to teach you how to build a URL if you were to use
      * a real API.If you want to connect your app to OpenWeatherMap's API, feel free to! However,
      * we are not going to show you how to do so in this course.
      */
+    private static final String API_KEY = "5ba8729ebee5f66585d1d556ab6c55f2";
 
     /* The format we want our API to return */
     private static final String format = "json";
@@ -56,6 +64,7 @@ public final class NetworkUtils {
     final static String FORMAT_PARAM = "mode";
     final static String UNITS_PARAM = "units";
     final static String DAYS_PARAM = "cnt";
+    final static String API_KEY_PARAM = "appid";
 
     /**
      * Builds the URL used to talk to the weather server using a location. This location is based
@@ -65,8 +74,17 @@ public final class NetworkUtils {
      * @return The URL to use to query the weather server.
      */
     public static URL buildUrl(String locationQuery) {
-        // TODO (1) Fix this method to return the URL used to query Open Weather Map's API
-        return null;
+        // DONE (1) Fix this method to return the URL used to query Open Weather Map's API
+        Uri builtUri = Uri.parse(OPEN_WEATHER_MAP_URL).buildUpon()
+                .appendQueryParameter(QUERY_PARAM, locationQuery)
+                .appendQueryParameter(API_KEY_PARAM, API_KEY).build();
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return url;
     }
 
     /**
