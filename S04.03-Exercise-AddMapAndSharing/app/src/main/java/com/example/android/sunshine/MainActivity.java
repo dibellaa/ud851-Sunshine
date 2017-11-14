@@ -221,7 +221,13 @@ public class MainActivity extends AppCompatActivity implements ForecastAdapterOn
             return true;
         }
 
-        // TODO (2) Launch the map when the map menu item is clicked
+        if (id == R.id.action_openMap) {
+            Uri uri = Uri.parse("geo:0,0");
+            Intent intentMap = new Intent(Intent.ACTION_VIEW, uri);
+            if(intentMap.resolveActivity(getPackageManager()) != null) {
+                startActivity(intentMap);
+            }
+        }
 
         return super.onOptionsItemSelected(item);
     }
